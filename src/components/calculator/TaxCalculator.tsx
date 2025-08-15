@@ -1,34 +1,66 @@
 'use client';
-
-import React from 'react';
+import React, { useState } from 'react';
 import { IncomeForm } from '@/components/forms/IncomeForm';
 import { DeductionsForm } from '@/components/forms/DeductionsForm';
 import { TaxResults } from '@/components/calculator/TaxResults';
 import { Card } from '@/components/ui/Card';
 import { useTax } from '@/lib/TaxContext';
 import { formatCurrency } from '@/utils/formatters';
-import { 
-  CalculatorIcon, 
+import {
+  CalculatorIcon,
   ArrowPathIcon,
-  InformationCircleIcon 
+  InformationCircleIcon,
+  CheckIcon,
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
+
+type Step = 'income' | 'deductions' | 'results';
 
 export function TaxCalculator() {
   const { state, calculateTax, resetCalculator } = useTax();
-  const { income, deductions, comparison, isLoading, error } = state;
+  const { income, comparison, isLoading, error } = state;
+  const [currentStep, setCurrentStep] = useState<Step>('income');
+  const [completedSteps, setCompletedSteps] = useState<Set<Step>>(new Set());
 
   const hasIncome = Object.values(income).some(value => value > 0);
-  const hasDeductions = Object.values(deductions).some(value => value > 0);
 
-  const handleCalculate = () => {
-    if (hasIncome) {
+  const handleNextStep = () => {
+    if (currentStep === 'income') {
+      setCurrentStep('deductions');
+      setCompletedSteps(prev => new Set([...prev, 'income']));
+    } else if (currentStep === 'deductions') {
       calculateTax();
+      setCurrentStep('results');
+      setCompletedSteps(prev => new Set([...prev, 'deductions']));
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (currentStep === 'deductions') {
+      setCurrentStep('income');
+    } else if (currentStep === 'results') {
+      setCurrentStep('deductions');
     }
   };
 
   const handleReset = () => {
     resetCalculator();
+    setCurrentStep('income');
+    setCompletedSteps(new Set());
   };
+
+  const canProceedToNext = () => {
+    if (currentStep === 'income') {
+      return hasIncome;
+    }
+    return true;
+  };
+
+  const steps = [
+    { id: 'income', title: 'Income Details', description: 'Enter your annual income from all sources' },
+    { id: 'deductions', title: 'Deductions & Exemptions', description: 'Enter your tax-saving investments and exemptions' },
+    { id: 'results', title: 'Tax Calculation Results', description: 'Compare Old vs New Tax Regime' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
@@ -36,7 +68,7 @@ export function TaxCalculator() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-400 opacity-20 blur-[100px]" />
       
-      <div className="relative max-w-7xl mx-auto px-4 py-16 space-y-16">
+      <div className="relative max-w-6xl mx-auto px-4 py-16 space-y-12">
         {/* Header */}
         <div className="text-center space-y-8">
           <div className="flex items-center justify-center space-x-4">
@@ -52,68 +84,146 @@ export function TaxCalculator() {
           </p>
         </div>
 
-        {/* Forms Section */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-16">
-          <IncomeForm />
-          <DeductionsForm />
+        {/* Stepper Navigation */}
+        <div className="flex justify-center">
+          <div className="flex items-center space-x-8">
+            {steps.map((step, index) => (
+              <div key={step.id} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div className={`
+                    w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200
+                    ${currentStep === step.id 
+                      ? 'bg-blue-600 text-white shadow-lg' 
+                      : completedSteps.has(step.id as Step)
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-200 text-gray-600'
+                    }
+                  `}>
+                    {completedSteps.has(step.id as Step) ? (
+                      <CheckIcon className="h-6 w-6" />
+                    ) : (
+                      index + 1
+                    )}
+                  </div>
+                  <div className="mt-3 text-center">
+                    <div className={`text-sm font-medium ${
+                      currentStep === step.id ? 'text-blue-600' : 'text-gray-600'
+                    }`}>
+                      {step.title}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1 max-w-32">
+                      {step.description}
+                    </div>
+                  </div>
+                </div>
+                {index < steps.length - 1 && (
+                  <div className={`w-16 h-0.5 mx-4 ${
+                    completedSteps.has(step.id as Step) ? 'bg-green-400' : 'bg-gray-300'
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <button
-            onClick={handleCalculate}
-            disabled={!hasIncome || isLoading}
-            className={`
-              px-8 py-4 rounded-lg font-medium text-white text-base
-              flex items-center space-x-3 transition-all duration-200 ease-out
-              ${hasIncome && !isLoading
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
-                : 'bg-gray-400 cursor-not-allowed'
-              }
-            `}
-          >
-            <CalculatorIcon className="h-5 w-5" />
-            <span>
-              {isLoading ? 'Calculating...' : 'Calculate Tax'}
-            </span>
-          </button>
+        {/* Main Content Area */}
+        <div className="max-w-4xl mx-auto">
+          {/* Step Content */}
+          {currentStep === 'income' && (
+            <div className="space-y-8">
+              <IncomeForm />
+              
+              {/* Navigation */}
+              <div className="flex justify-center">
+                <button
+                  onClick={handleNextStep}
+                  disabled={!canProceedToNext()}
+                  className={`
+                    px-8 py-4 rounded-lg font-medium text-white text-base
+                    flex items-center space-x-3 transition-all duration-200 ease-out
+                    ${canProceedToNext()
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
+                      : 'bg-gray-400 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  <span>Continue to Deductions</span>
+                  <ArrowRightIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          )}
 
-          <button
-            onClick={handleReset}
-            className="px-6 py-4 rounded-lg font-medium text-gray-600 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-200 flex items-center space-x-3 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
-          >
-            <ArrowPathIcon className="h-4 w-4" />
-            <span>Reset</span>
-          </button>
+          {currentStep === 'deductions' && (
+            <div className="space-y-8">
+              <DeductionsForm />
+              
+              {/* Navigation */}
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={handlePreviousStep}
+                  className="px-6 py-4 rounded-lg font-medium text-gray-600 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-200 flex items-center space-x-3 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
+                >
+                  <ArrowRightIcon className="h-4 w-4 rotate-180" />
+                  <span>Back to Income</span>
+                </button>
+                
+                <button
+                  onClick={handleNextStep}
+                  className="px-8 py-4 rounded-lg font-medium text-white text-base bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center space-x-3 transition-all duration-200 ease-out"
+                >
+                  <CalculatorIcon className="h-5 w-5" />
+                  <span>Calculate Tax</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 'results' && comparison && (
+            <div className="space-y-8">
+              <TaxResults comparison={comparison} onReset={handleReset} />
+              
+              {/* Navigation */}
+              <div className="flex justify-center">
+                <button
+                  onClick={handleReset}
+                  className="px-8 py-4 rounded-lg font-medium text-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center space-x-3 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
+                >
+                  <ArrowPathIcon className="h-4 w-4" />
+                  <span>Calculate Again</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Loading State */}
+          {isLoading && (
+            <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="text-lg font-semibold text-blue-800">Calculating Tax...</span>
+              </div>
+              <p className="text-blue-700">
+                Please wait while we process your income and deductions
+              </p>
+            </div>
+          )}
+
+          {/* Error Display */}
+          {error && (
+            <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-8 shadow-lg">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-red-100 rounded-full">
+                  <InformationCircleIcon className="h-6 w-6 text-red-500" />
+                </div>
+                <div>
+                  <span className="text-red-800 font-semibold text-lg">Error: </span>
+                  <span className="text-red-700 text-lg">{error}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Loading State */}
-        {isLoading && (
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="text-lg font-semibold text-blue-800">Calculating Tax...</span>
-            </div>
-            <p className="text-blue-700">
-              Please wait while we process your income and deductions
-            </p>
-          </div>
-        )}
-
-        {/* Error Display */}
-        {error && (
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-8 shadow-lg">
-            <div className="flex items-center space-x-4">
-              <div className="p-3 bg-red-100 rounded-full">
-                <InformationCircleIcon className="h-6 w-6 text-red-500" />
-              </div>
-              <div>
-                <span className="text-red-800 font-semibold text-lg">Error: </span>
-                <span className="text-red-700 text-lg">{error}</span>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Quick Tips */}
         <Card 
@@ -152,11 +262,6 @@ export function TaxCalculator() {
             </div>
           </div>
         </Card>
-
-        {/* Results will be displayed here when calculation is complete */}
-        {comparison && (
-          <TaxResults comparison={comparison} onReset={handleReset} />
-        )}
       </div>
     </div>
   );

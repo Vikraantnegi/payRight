@@ -11,15 +11,15 @@ export function DeductionsForm() {
   const { state, updateDeductions } = useTax();
   const { deductions } = state;
 
-  const handleDeductionChange = (field: keyof typeof deductions, value: number) => {
-    updateDeductions({ [field]: value });
+  const handleInputChange = (field: keyof typeof deductions, value: number) => {
+    updateDeductions({ ...deductions, [field]: value });
   };
 
   const totalDeductions = Object.values(deductions).reduce((sum, value) => sum + value, 0);
   const eightyCLimit = TaxCalculator.calculate80CLimitUtilization(deductions);
 
   return (
-    <Card 
+    <Card
       title="Deductions & Exemptions" 
       subtitle="Enter your tax-saving investments and exemptions (Old Tax Regime only)"
       className="space-y-8"
@@ -34,75 +34,93 @@ export function DeductionsForm() {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* ELSS */}
           <Input
             label="ELSS (Equity Linked Savings Scheme)"
-            value={deductions.elss}
-            onChange={(value) => handleDeductionChange('elss', value)}
             type="currency"
+            value={deductions.elss || 0}
+            onChange={(value) => handleInputChange('elss', value)}
+            placeholder="Enter ELSS amount"
             helperText="Tax-saving mutual funds"
           />
-          
+
+          {/* PPF */}
           <Input
             label="PPF (Public Provident Fund)"
-            value={deductions.ppf}
-            onChange={(value) => handleDeductionChange('ppf', value)}
             type="currency"
+            value={deductions.ppf || 0}
+            onChange={(value) => handleInputChange('ppf', value)}
+            placeholder="Enter PPF amount"
             helperText="Public Provident Fund contributions"
           />
-          
+
+          {/* EPF */}
           <Input
             label="EPF (Employee Provident Fund)"
-            value={deductions.epf}
-            onChange={(value) => handleDeductionChange('epf', value)}
             type="currency"
+            value={deductions.epf || 0}
+            onChange={(value) => handleInputChange('epf', value)}
+            placeholder="Enter EPF amount"
             helperText="Employee Provident Fund contributions"
           />
-          
+
+          {/* Life Insurance */}
           <Input
             label="Life Insurance Premium"
-            value={deductions.lifeInsurance}
-            onChange={(value) => handleDeductionChange('lifeInsurance', value)}
             type="currency"
+            value={deductions.lifeInsurance || 0}
+            onChange={(value) => handleInputChange('lifeInsurance', value)}
+            placeholder="Enter life insurance premium"
             helperText="Life insurance premium payments"
           />
-          
+
+          {/* NPS */}
           <Input
             label="NPS (National Pension System)"
-            value={deductions.nps}
-            onChange={(value) => handleDeductionChange('nps', value)}
             type="currency"
+            value={deductions.nps || 0}
+            onChange={(value) => handleInputChange('nps', value)}
+            placeholder="Enter NPS amount"
             helperText="NPS contributions (additional ₹50,000 limit)"
           />
-          
+
+          {/* Home Loan Principal */}
           <Input
             label="Home Loan Principal"
-            value={deductions.homeLoanPrincipal}
-            onChange={(value) => handleDeductionChange('homeLoanPrincipal', value)}
             type="currency"
+            value={deductions.homeLoanPrincipal || 0}
+            onChange={(value) => handleInputChange('homeLoanPrincipal', value)}
+            placeholder="Enter home loan principal"
             helperText="Home loan principal repayment"
           />
-          
+
+          {/* Sukanya Samriddhi */}
           <Input
             label="Sukanya Samriddhi"
-            value={deductions.sukanyaSamriddhi}
-            onChange={(value) => handleDeductionChange('sukanyaSamriddhi', value)}
             type="currency"
-            helperText="Sukanya Samriddhi Yojana"
+            value={deductions.sukanyaSamriddhi || 0}
+            onChange={(value) => handleInputChange('sukanyaSamriddhi', value)}
+            placeholder="Enter Sukanya Samriddhi amount"
+            helperText="Sukanya Samriddhi Yojana contributions"
           />
-          
+
+          {/* NSC */}
           <Input
             label="NSC (National Savings Certificate)"
-            value={deductions.nsc}
-            onChange={(value) => handleDeductionChange('nsc', value)}
             type="currency"
-            helperText="National Savings Certificate"
+            value={deductions.nsc || 0}
+            onChange={(value) => handleInputChange('nsc', value)}
+            placeholder="Enter NSC amount"
+            helperText="National Savings Certificate investments"
           />
-          
+
+          {/* Tax Saving FD */}
           <Input
             label="Tax Saving FD"
-            value={deductions.taxSavingFd}
-            onChange={(value) => handleDeductionChange('taxSavingFd', value)}
             type="currency"
+            value={deductions.taxSavingFd || 0}
+            onChange={(value) => handleInputChange('taxSavingFd', value)}
+            placeholder="Enter tax saving FD amount"
             helperText="Tax-saving fixed deposits"
           />
         </div>
@@ -127,38 +145,41 @@ export function DeductionsForm() {
         </div>
       </div>
 
-      {/* 80D Health Insurance Section */}
+      {/* 80D Deductions Section */}
       <div className="space-y-6">
         <div className="border-b border-gray-200 pb-3">
           <h4 className="text-lg font-semibold text-gray-800">
-            80D Health Insurance
+            80D Health Insurance Deductions
           </h4>
-          <p className="text-sm text-gray-600 mt-1">Health insurance premium deductions</p>
+          <p className="text-sm text-gray-600 mt-1">Health insurance and preventive health checkup expenses</p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Input
             label="Health Insurance (Self & Family)"
-            value={deductions.healthInsuranceSelf}
-            onChange={(value) => handleDeductionChange('healthInsuranceSelf', value)}
             type="currency"
-            helperText="Limit: ₹25,000 (₹50,000 for senior citizens)"
+            value={deductions.healthInsuranceSelf || 0}
+            onChange={(value) => handleInputChange('healthInsuranceSelf', value)}
+            placeholder="Enter health insurance premium"
+            helperText="Health insurance premium for self and family"
           />
-          
+
           <Input
             label="Health Insurance (Parents)"
-            value={deductions.healthInsuranceParents}
-            onChange={(value) => handleDeductionChange('healthInsuranceParents', value)}
             type="currency"
-            helperText="Limit: ₹25,000 (₹50,000 for senior citizens)"
+            value={deductions.healthInsuranceParents || 0}
+            onChange={(value) => handleInputChange('healthInsuranceParents', value)}
+            placeholder="Enter parents health insurance"
+            helperText="Health insurance premium for parents"
           />
-          
+
           <Input
             label="Preventive Health Checkup"
-            value={deductions.preventiveHealthCheckup}
-            onChange={(value) => handleDeductionChange('preventiveHealthCheckup', value)}
             type="currency"
-            helperText="Limit: ₹5,000 (included in 80D limit)"
+            value={deductions.preventiveHealthCheckup || 0}
+            onChange={(value) => handleInputChange('preventiveHealthCheckup', value)}
+            placeholder="Enter health checkup amount"
+            helperText="Preventive health checkup expenses (max ₹5,000)"
           />
         </div>
       </div>
@@ -175,42 +196,47 @@ export function DeductionsForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Input
             label="HRA Exemption"
-            value={deductions.hraExemption}
-            onChange={(value) => handleDeductionChange('hraExemption', value)}
             type="currency"
+            value={deductions.hraExemption || 0}
+            onChange={(value) => handleInputChange('hraExemption', value)}
+            placeholder="Enter HRA exemption"
             helperText="HRA exemption based on rent paid"
           />
-          
+
           <Input
             label="LTA (Leave Travel Allowance)"
-            value={deductions.lta}
-            onChange={(value) => handleDeductionChange('lta', value)}
             type="currency"
-            helperText="Leave travel allowance exemption"
+            value={deductions.lta || 0}
+            onChange={(value) => handleInputChange('lta', value)}
+            placeholder="Enter LTA amount"
+            helperText="Leave Travel Allowance exemption"
           />
-          
+
           <Input
             label="Home Loan Interest"
-            value={deductions.homeLoanInterest}
-            onChange={(value) => handleDeductionChange('homeLoanInterest', value)}
             type="currency"
-            helperText="Home loan interest deduction (80C)"
+            value={deductions.homeLoanInterest || 0}
+            onChange={(value) => handleInputChange('homeLoanInterest', value)}
+            placeholder="Enter home loan interest"
+            helperText="Interest on home loan (self-occupied property)"
           />
-          
+
           <Input
-            label="80G Donations"
-            value={deductions.donations}
-            onChange={(value) => handleDeductionChange('donations', value)}
+            label="Donations to Charity"
             type="currency"
-            helperText="Donations to registered charities"
+            value={deductions.donations || 0}
+            onChange={(value) => handleInputChange('donations', value)}
+            placeholder="Enter donation amount"
+            helperText="Donations to eligible charitable institutions"
           />
-          
+
           <Input
-            label="Interest on Savings (80TTA)"
-            value={deductions.interestOnSavings}
-            onChange={(value) => handleDeductionChange('interestOnSavings', value)}
+            label="Interest on Savings"
             type="currency"
-            helperText="Interest on savings account (limit: ₹10,000)"
+            value={deductions.interestOnSavings || 0}
+            onChange={(value) => handleInputChange('interestOnSavings', value)}
+            placeholder="Enter interest on savings"
+            helperText="Interest income from savings accounts (80TTA)"
           />
         </div>
       </div>
