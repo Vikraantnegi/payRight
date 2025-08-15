@@ -108,20 +108,20 @@ export function DeductionsForm() {
         </div>
         
         {/* 80C Limit Progress */}
-        <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-semibold text-green-800">80C Limit Utilization</span>
-            <span className="text-sm font-semibold text-green-800">
+        <div className="p-6 bg-gradient-to-r from-green-50/80 via-emerald-50/80 to-green-50/80 rounded-2xl border border-green-200/50 shadow-lg">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-semibold text-green-800">80C Limit Utilization</span>
+            <span className="text-base font-semibold text-green-800">
               {eightyCLimit.used.toLocaleString()}/{eightyCLimit.limit.toLocaleString()}
             </span>
           </div>
-          <div className="w-full bg-green-200 rounded-full h-3 mb-3">
+          <div className="w-full bg-green-200 rounded-full h-4 mb-4">
             <div 
-              className="bg-green-600 h-3 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-green-500 to-emerald-500 h-4 rounded-full transition-all duration-300 shadow-sm"
               style={{ width: `${eightyCLimit.utilizationPercentage}%` }}
             ></div>
           </div>
-          <div className="text-sm text-green-700">
+          <div className="text-sm text-green-700 opacity-90">
             {eightyCLimit.utilizationPercentage}% used • ₹{eightyCLimit.remaining.toLocaleString()} remaining
           </div>
         </div>
@@ -216,14 +216,14 @@ export function DeductionsForm() {
       </div>
 
       {/* Total Deductions Summary */}
-      <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+      <div className="mt-10 p-8 bg-gradient-to-r from-green-50/80 via-emerald-50/80 to-green-50/80 rounded-2xl border border-green-200/50 shadow-lg">
         <div className="flex justify-between items-center">
-          <span className="text-lg font-semibold text-green-900">Total Deductions:</span>
-          <span className="text-3xl font-bold text-green-900">
+          <span className="text-xl font-semibold text-green-900">Total Deductions:</span>
+          <span className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
             {formatCurrency(totalDeductions)}
           </span>
         </div>
-        <div className="text-sm text-green-700 mt-2">
+        <div className="text-base text-green-700 mt-3 opacity-90">
           Note: Most deductions are only applicable under Old Tax Regime
         </div>
       </div>

@@ -45,16 +45,16 @@ export function Input({
   };
 
   return (
-    <div className={`space-y-2 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className={`space-y-3 ${className}`}>
+      <label className="block text-sm font-semibold text-gray-700 mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       
-      <div className="relative">
+      <div className="relative group">
         {type === 'currency' && (
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <span className="text-gray-500 font-medium">₹</span>
+            <span className="text-gray-500 font-semibold text-lg">₹</span>
           </div>
         )}
         
@@ -65,26 +65,37 @@ export function Input({
           placeholder={placeholder || `Enter ${label.toLowerCase()}`}
           disabled={disabled}
           className={`
-            block w-full rounded-lg border-2 transition-all duration-200
-            px-4 py-3 text-gray-900 placeholder-gray-400
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+            block w-full rounded-xl border-2 transition-all duration-300 ease-out
+            px-4 py-4 text-gray-900 placeholder-gray-400 text-base
+            focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500
+            group-hover:border-gray-300 group-hover:shadow-md
             ${type === 'currency' ? 'pl-12' : 'pl-4'}
             ${error 
-              ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
-              : 'border-gray-200 hover:border-gray-300'
+              ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' 
+              : 'border-gray-200'
             }
             ${disabled ? 'bg-gray-50 text-gray-500 cursor-not-allowed border-gray-200' : 'bg-white'}
-            text-sm leading-6
+            leading-6 shadow-sm
           `}
         />
+        
+        {/* Subtle glow effect on focus */}
+        <div className={`
+          absolute inset-0 rounded-xl transition-all duration-300 pointer-events-none
+          ${error ? 'shadow-red-500/20' : 'shadow-blue-500/20'}
+          opacity-0 group-focus-within:opacity-100
+        `} />
       </div>
       
       {error && (
-        <p className="text-sm text-red-600 mt-1">{error}</p>
+        <p className="text-sm text-red-600 mt-2 flex items-center space-x-2">
+          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+          <span>{error}</span>
+        </p>
       )}
       
       {helperText && !error && (
-        <p className="text-sm text-gray-500 mt-1 leading-relaxed">{helperText}</p>
+        <p className="text-sm text-gray-500 mt-2 leading-relaxed opacity-80">{helperText}</p>
       )}
     </div>
   );
