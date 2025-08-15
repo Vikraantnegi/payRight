@@ -60,24 +60,24 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             {/* Tax Breakdown */}
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Gross Income:</span>
-                <span className="font-medium">{formatCurrency(oldRegime.grossIncome)}</span>
+                <span className="text-sm text-gray-700 font-medium">Gross Income:</span>
+                <span className="font-semibold text-gray-900">{formatCurrency(oldRegime.grossIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Total Deductions:</span>
-                <span className="font-medium text-green-600">-{formatCurrency(oldRegime.totalDeductions)}</span>
+                <span className="text-sm text-gray-700 font-medium">Total Deductions:</span>
+                <span className="font-semibold text-green-600">-{formatCurrency(oldRegime.totalDeductions)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Taxable Income:</span>
-                <span className="font-medium">{formatCurrency(oldRegime.taxableIncome)}</span>
+                <span className="text-sm text-gray-700 font-medium">Taxable Income:</span>
+                <span className="font-semibold text-gray-900">{formatCurrency(oldRegime.taxableIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Standard Deduction:</span>
-                <span className="font-medium text-green-600">-{formatCurrency(oldRegime.standardDeduction)}</span>
+                <span className="text-sm text-gray-700 font-medium">Standard Deduction:</span>
+                <span className="font-semibold text-green-600">-{formatCurrency(oldRegime.standardDeduction)}</span>
               </div>
-              <div className="flex justify-between items-center py-2 font-semibold text-gray-800">
+              <div className="flex justify-between items-center py-2 font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-lg">
                 <span>Final Tax:</span>
-                <span>{formatCurrency(oldRegime.taxAmount)}</span>
+                <span className="text-lg">{formatCurrency(oldRegime.taxAmount)}</span>
               </div>
             </div>
 
@@ -112,24 +112,24 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             {/* Tax Breakdown */}
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Gross Income:</span>
-                <span className="font-medium">{formatCurrency(newRegime.grossIncome)}</span>
+                <span className="text-sm text-gray-700 font-medium">Gross Income:</span>
+                <span className="font-semibold text-gray-900">{formatCurrency(newRegime.grossIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Total Deductions:</span>
-                <span className="font-medium text-green-600">-{formatCurrency(newRegime.totalDeductions)}</span>
+                <span className="text-sm text-gray-700 font-medium">Total Deductions:</span>
+                <span className="font-semibold text-green-600">-{formatCurrency(newRegime.totalDeductions)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Taxable Income:</span>
-                <span className="font-medium">{formatCurrency(newRegime.taxableIncome)}</span>
+                <span className="text-sm text-gray-700 font-medium">Taxable Income:</span>
+                <span className="font-semibold text-gray-900">{formatCurrency(newRegime.taxableIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-600">Standard Deduction:</span>
-                <span className="font-medium text-green-600">-{formatCurrency(newRegime.standardDeduction)}</span>
+                <span className="text-sm text-gray-700 font-medium">Standard Deduction:</span>
+                <span className="font-semibold text-green-600">-{formatCurrency(newRegime.standardDeduction)}</span>
               </div>
-              <div className="flex justify-between items-center py-2 font-semibold text-gray-800">
+              <div className="flex justify-between items-center py-2 font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-lg">
                 <span>Final Tax:</span>
-                <span>{formatCurrency(newRegime.taxAmount)}</span>
+                <span className="text-lg">{formatCurrency(newRegime.taxAmount)}</span>
               </div>
             </div>
 

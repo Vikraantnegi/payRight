@@ -100,6 +100,7 @@ export class TaxCalculator {
     for (const slab of taxSlabs) {
       if (remainingIncome <= 0) break;
 
+      // Calculate income in this slab
       const slabIncome = Math.min(
         remainingIncome,
         slab.maxIncome === Infinity ? remainingIncome : slab.maxIncome - slab.minIncome
@@ -130,6 +131,15 @@ export class TaxCalculator {
     
     const yearlyInHand = grossIncome - taxAmount;
     const monthlyInHand = yearlyInHand / 12;
+
+    // Debug logging
+    console.log(`${regime.name} Regime Calculation:`, {
+      grossIncome,
+      totalDeductions,
+      taxableIncome,
+      taxAmount,
+      effectiveTaxRate
+    });
 
     return {
       regime,

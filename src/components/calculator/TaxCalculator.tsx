@@ -207,17 +207,6 @@ export function TaxCalculator() {
           {currentStep === 'results' && comparison && (
             <div className="space-y-8">
               <TaxResults comparison={comparison} onReset={handleReset} />
-              
-              {/* Navigation */}
-              <div className="flex justify-center pt-8">
-                <button
-                  onClick={handleReset}
-                  className="px-10 py-4 rounded-xl font-semibold text-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center space-x-3 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
-                >
-                  <ArrowPathIcon className="h-4 w-4" />
-                  <span>Calculate Again</span>
-                </button>
-              </div>
             </div>
           )}
 
