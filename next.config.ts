@@ -45,9 +45,30 @@ const nextConfig: NextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
         ],
       },
     ];
+  },
+
+  // Bundle analyzer configuration (simplified)
+  webpack: (config, { isServer }) => {
+    if (process.env.ANALYZE === 'true' && !isServer) {
+      try {
+        const BundleAnalyzerPlugin = require('@next/bundle-analyzer');
+        config.plugins.push(
+          new BundleAnalyzerPlugin({
+            enabled: true,
+          })
+        );
+      } catch (error) {
+        console.warn('Bundle analyzer not available, skipping...');
+      }
+    }
+    return config;
   },
 };
 

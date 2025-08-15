@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import { TaxProvider } from '@/lib/TaxContext';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 export const metadata: Metadata = {
   title: 'Pay Right | Tax Calculator - Compare Old vs New Tax Regime',
@@ -38,7 +40,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='antialiased'>{children}</body>
+      <body className='antialiased'>
+        <ErrorBoundary>
+          <TaxProvider>{children}</TaxProvider>
+        </ErrorBoundary>
+      </body>
     </html>
   );
 }
