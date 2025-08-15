@@ -19,8 +19,8 @@ interface TaxResultsProps {
 
 export function TaxResults({ comparison, onReset }: TaxResultsProps) {
   const { oldRegime, newRegime, recommendation } = comparison;
-  const savings = Math.abs(oldRegime.totalTax - newRegime.totalTax);
-  const isOldRegimeBetter = oldRegime.totalTax < newRegime.totalTax;
+  const savings = Math.abs(oldRegime.taxAmount - newRegime.taxAmount);
+  const isOldRegimeBetter = oldRegime.taxAmount < newRegime.taxAmount;
 
   return (
     <div className="space-y-8">
@@ -50,10 +50,10 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             <div className="text-center p-6 bg-white rounded-xl border border-gray-200">
               <div className="text-2xl font-medium text-gray-600 mb-2">Total Tax</div>
               <div className="text-4xl font-bold text-gray-800">
-                {formatCurrency(oldRegime.totalTax)}
+                {formatCurrency(oldRegime.taxAmount)}
               </div>
               <div className="text-sm text-gray-500 mt-2">
-                Monthly: {formatCurrency(oldRegime.totalTax / 12)}
+                Monthly: {formatCurrency(oldRegime.taxAmount / 12)}
               </div>
             </div>
 
@@ -77,7 +77,7 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
               </div>
               <div className="flex justify-between items-center py-2 font-semibold text-gray-800">
                 <span>Final Tax:</span>
-                <span>{formatCurrency(oldRegime.totalTax)}</span>
+                <span>{formatCurrency(oldRegime.taxAmount)}</span>
               </div>
             </div>
 
@@ -102,10 +102,10 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             <div className="text-center p-6 bg-white rounded-xl border border-gray-200">
               <div className="text-2xl font-medium text-gray-600 mb-2">Total Tax</div>
               <div className="text-4xl font-bold text-gray-800">
-                {formatCurrency(newRegime.totalTax)}
+                {formatCurrency(newRegime.taxAmount)}
               </div>
               <div className="text-sm text-gray-500 mt-2">
-                Monthly: {formatCurrency(newRegime.totalTax / 12)}
+                Monthly: {formatCurrency(newRegime.taxAmount / 12)}
               </div>
             </div>
 
@@ -129,7 +129,7 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
               </div>
               <div className="flex justify-between items-center py-2 font-semibold text-gray-800">
                 <span>Final Tax:</span>
-                <span>{formatCurrency(newRegime.totalTax)}</span>
+                <span>{formatCurrency(newRegime.taxAmount)}</span>
               </div>
             </div>
 
@@ -189,7 +189,7 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             <div className="p-4 bg-white rounded-lg border border-gray-200 text-center">
               <div className="text-sm text-gray-600 mb-2">Savings %</div>
               <div className="text-2xl font-bold text-green-600">
-                {formatPercentage((savings / Math.max(oldRegime.totalTax, newRegime.totalTax)) * 100)}
+                {formatPercentage((savings / Math.max(oldRegime.taxAmount, newRegime.taxAmount)) * 100)}
               </div>
             </div>
           </div>

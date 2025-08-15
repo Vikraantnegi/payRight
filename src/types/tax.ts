@@ -62,12 +62,14 @@ export interface TaxCalculation {
   effectiveTaxRate: number;
   monthlyInHand: number;
   yearlyInHand: number;
+  standardDeduction: number;
 }
 
 export interface TaxComparison {
   oldRegime: TaxCalculation;
   newRegime: TaxCalculation;
   recommendedRegime: 'old' | 'new';
+  recommendation: string;
   taxSavings: number;
   monthlyDifference: number;
   yearlyDifference: number;

@@ -139,7 +139,8 @@ export class TaxCalculator {
       taxAmount,
       effectiveTaxRate: Math.round(effectiveTaxRate * 100) / 100,
       monthlyInHand: Math.round(monthlyInHand),
-      yearlyInHand: Math.round(yearlyInHand)
+      yearlyInHand: Math.round(yearlyInHand),
+      standardDeduction: regime.standardDeduction
     };
   }
 
@@ -158,11 +159,20 @@ export class TaxCalculator {
     const yearlyDifference = Math.abs(oldRegimeCalc.yearlyInHand - newRegimeCalc.yearlyInHand);
 
     const recommendedRegime = oldRegimeCalc.taxAmount <= newRegimeCalc.taxAmount ? 'old' : 'new';
+    
+    // Generate recommendation text
+    let recommendation = '';
+    if (recommendedRegime === 'old') {
+      recommendation = `The Old Tax Regime is better for you! You'll save ₹${taxSavings.toLocaleString('en-IN')} annually by choosing the Old Tax Regime. This is because your deductions (₹${oldRegimeCalc.totalDeductions.toLocaleString('en-IN')}) provide significant tax benefits that outweigh the higher tax rates.`;
+    } else {
+      recommendation = `The New Tax Regime is better for you! You'll save ₹${taxSavings.toLocaleString('en-IN')} annually by choosing the New Tax Regime. The lower tax rates provide more benefits than the deductions you could claim under the Old Tax Regime.`;
+    }
 
     return {
       oldRegime: oldRegimeCalc,
       newRegime: newRegimeCalc,
       recommendedRegime,
+      recommendation,
       taxSavings,
       monthlyDifference: Math.round(monthlyDifference),
       yearlyDifference: Math.round(yearlyDifference)
