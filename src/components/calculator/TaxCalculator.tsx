@@ -39,14 +39,14 @@ export function TaxCalculator() {
         {/* Header */}
         <div className="text-center space-y-8">
           <div className="flex items-center justify-center space-x-4">
-            <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg">
-              <CalculatorIcon className="h-10 w-10 text-white" />
+            <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+              <CalculatorIcon className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-semibold text-gray-800">
               Indian Tax Calculator
             </h1>
           </div>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed opacity-90">
+          <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed opacity-80">
             Compare Old vs New Tax Regime for AY 2026-27 and find out which one saves you more money
           </p>
         </div>
@@ -63,15 +63,15 @@ export function TaxCalculator() {
             onClick={handleCalculate}
             disabled={!hasIncome || isLoading}
             className={`
-              px-10 py-5 rounded-2xl font-semibold text-white text-lg
-              flex items-center space-x-3 transition-all duration-300 ease-out
+              px-8 py-4 rounded-lg font-medium text-white text-base
+              flex items-center space-x-3 transition-all duration-200 ease-out
               ${hasIncome && !isLoading
-                ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 shadow-[0_8px_30px_rgb(59,130,246,0.5)] hover:shadow-[0_8px_40px_rgb(59,130,246,0.6)] transform hover:-translate-y-1'
+                ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
                 : 'bg-gray-400 cursor-not-allowed'
               }
             `}
           >
-            <CalculatorIcon className="h-6 w-6" />
+            <CalculatorIcon className="h-5 w-5" />
             <span>
               {isLoading ? 'Calculating...' : 'Calculate Tax'}
             </span>
@@ -79,9 +79,9 @@ export function TaxCalculator() {
 
           <button
             onClick={handleReset}
-            className="px-8 py-5 rounded-2xl font-medium text-gray-700 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300 flex items-center space-x-3 border-2 border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+            className="px-6 py-4 rounded-lg font-medium text-gray-600 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-200 flex items-center space-x-3 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
           >
-            <ArrowPathIcon className="h-5 w-5" />
+            <ArrowPathIcon className="h-4 w-4" />
             <span>Reset</span>
           </button>
         </div>
@@ -105,34 +105,34 @@ export function TaxCalculator() {
         <Card 
           title="💡 Quick Tips" 
           subtitle="Make the most of your tax planning"
-          className="max-w-5xl mx-auto bg-gradient-to-r from-blue-50/80 to-indigo-50/80 border-blue-200/50"
+          className="max-w-5xl mx-auto bg-gradient-to-r from-blue-50/60 to-indigo-50/60 border-blue-200/40"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-base text-gray-700">
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-600">
+            <div className="space-y-3">
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>Old Tax Regime allows full deductions but higher tax rates</span>
               </p>
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>New Tax Regime has lower rates but limited deductions</span>
               </p>
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>Use 80C investments to save up to ₹1.5L in taxes</span>
               </p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>HRA exemption can save significant tax if you&apos;re renting</span>
               </p>
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>Health insurance premiums are deductible under 80D</span>
               </p>
               <p className="flex items-start space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                 <span>NPS offers additional ₹50K deduction beyond 80C</span>
               </p>
             </div>

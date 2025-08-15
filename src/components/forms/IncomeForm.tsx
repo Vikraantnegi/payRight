@@ -107,14 +107,14 @@ export function IncomeForm() {
       </div>
 
       {/* Total Income Summary */}
-      <div className="mt-10 p-8 bg-gradient-to-r from-blue-50/80 via-indigo-50/80 to-blue-50/80 rounded-2xl border border-blue-200/50 shadow-lg">
+      <div className="mt-10 p-6 bg-gradient-to-r from-blue-50/60 via-indigo-50/60 to-blue-50/60 rounded-xl border border-blue-200/40 shadow-sm">
         <div className="flex justify-between items-center">
-          <span className="text-xl font-semibold text-blue-900">Total Annual Income:</span>
-          <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <span className="text-lg font-medium text-blue-800">Total Annual Income:</span>
+          <span className="text-3xl font-semibold text-blue-800">
             {formatCurrency(totalIncome)}
           </span>
         </div>
-        <div className="text-base text-blue-700 mt-3 opacity-90">
+        <div className="text-sm text-blue-600 mt-2 opacity-80">
           Monthly: {formatCurrency(totalIncome / 12)}
         </div>
       </div>
