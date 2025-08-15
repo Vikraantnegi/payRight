@@ -8,8 +8,8 @@ import {
   CheckCircleIcon, 
   XCircleIcon, 
   ArrowRightIcon,
-  TrendingUpIcon,
-  TrendingDownIcon
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon
 } from '@heroicons/react/24/outline';
 
 interface TaxResultsProps {
@@ -33,7 +33,7 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
           </h2>
         </div>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Here's your detailed tax breakdown and regime comparison for AY 2026-27
+          Here&apos;s your detailed tax breakdown and regime comparison for AY 2026-27
         </p>
       </div>
 
@@ -155,9 +155,9 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
           <div className="p-6 bg-white rounded-xl border border-gray-200">
             <div className="flex items-center justify-center space-x-3 mb-4">
               {isOldRegimeBetter ? (
-                <TrendingDownIcon className="h-8 w-8 text-green-500" />
+                <ArrowTrendingDownIcon className="h-8 w-8 text-green-500" />
               ) : (
-                <TrendingUpIcon className="h-8 w-8 text-blue-500" />
+                <ArrowTrendingUpIcon className="h-8 w-8 text-blue-500" />
               )}
               <h3 className="text-2xl font-semibold text-gray-800">
                 Choose {isOldRegimeBetter ? 'Old Tax Regime' : 'New Tax Regime'}
