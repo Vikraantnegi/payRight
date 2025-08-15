@@ -3,6 +3,7 @@
 import React from 'react';
 import { IncomeForm } from '@/components/forms/IncomeForm';
 import { DeductionsForm } from '@/components/forms/DeductionsForm';
+import { TaxResults } from '@/components/calculator/TaxResults';
 import { Card } from '@/components/ui/Card';
 import { useTax } from '@/lib/TaxContext';
 import { formatCurrency } from '@/utils/formatters';
@@ -86,9 +87,22 @@ export function TaxCalculator() {
           </button>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="text-lg font-semibold text-blue-800">Calculating Tax...</span>
+            </div>
+            <p className="text-blue-700">
+              Please wait while we process your income and deductions
+            </p>
+          </div>
+        )}
+
         {/* Error Display */}
         {error && (
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl p-8 shadow-lg">
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-8 shadow-lg">
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-red-100 rounded-full">
                 <InformationCircleIcon className="h-6 w-6 text-red-500" />
@@ -141,17 +155,7 @@ export function TaxCalculator() {
 
         {/* Results will be displayed here when calculation is complete */}
         {comparison && (
-          <div className="mt-8">
-            {/* Results component will be added here */}
-            <div className="max-w-3xl mx-auto bg-gradient-to-r from-green-50/80 to-emerald-50/80 border-2 border-green-200/50 rounded-2xl p-10 text-center shadow-lg">
-              <h3 className="text-3xl font-bold text-green-800 mb-4">
-                Calculation Complete! 🎉
-              </h3>
-              <p className="text-green-700 text-xl">
-                Your tax comparison is ready. Results component will be implemented next.
-              </p>
-            </div>
-          </div>
+          <TaxResults comparison={comparison} onReset={handleReset} />
         )}
       </div>
     </div>
