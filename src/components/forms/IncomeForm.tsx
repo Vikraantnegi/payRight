@@ -20,9 +20,9 @@ export function IncomeForm() {
     <Card 
       title="Income Details" 
       subtitle="Enter your annual income from all sources"
-      className="space-y-6"
+      className="space-y-8"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Basic Salary */}
         <Input
           label="Basic Salary"
@@ -107,14 +107,14 @@ export function IncomeForm() {
       </div>
 
       {/* Total Income Summary */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold text-blue-900">Total Annual Income:</span>
-          <span className="text-2xl font-bold text-blue-900">
+          <span className="text-3xl font-bold text-blue-900">
             {formatCurrency(totalIncome)}
           </span>
         </div>
-        <div className="text-sm text-blue-700 mt-1">
+        <div className="text-sm text-blue-700 mt-2">
           Monthly: {formatCurrency(totalIncome / 12)}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +18,13 @@ export const metadata: Metadata = {
     description: "Calculate your income tax under both Old and New Tax Regime for AY 2026-27. Compare tax savings and find optimal regime.",
   },
   robots: "index, follow",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

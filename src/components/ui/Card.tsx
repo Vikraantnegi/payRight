@@ -18,20 +18,20 @@ export function Card({
   padding = 'md' 
 }: CardProps) {
   const paddingClasses = {
-    sm: 'p-4',
+    sm: 'p-5',
     md: 'p-6',
     lg: 'p-8'
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 ${paddingClasses[padding]} ${className}`}>
+    <div className={`bg-white rounded-xl shadow-lg border border-gray-100 ${paddingClasses[padding]} ${className}`}>
       {(title || subtitle) && (
-        <div className="mb-4">
+        <div className="mb-6">
           {title && (
-            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
           )}
           {subtitle && (
-            <p className="text-sm text-gray-600 mt-1">{subtitle}</p>
+            <p className="text-sm text-gray-600 leading-relaxed">{subtitle}</p>
           )}
         </div>
       )}

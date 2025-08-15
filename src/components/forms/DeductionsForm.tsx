@@ -22,14 +22,18 @@ export function DeductionsForm() {
     <Card 
       title="Deductions & Exemptions" 
       subtitle="Enter your tax-saving investments and exemptions (Old Tax Regime only)"
-      className="space-y-6"
+      className="space-y-8"
     >
       {/* 80C Investments Section */}
-      <div className="space-y-4">
-        <h4 className="text-md font-semibold text-gray-800 border-b border-gray-200 pb-2">
-          80C Investments (Limit: ₹1,50,000)
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-6">
+        <div className="border-b border-gray-200 pb-3">
+          <h4 className="text-lg font-semibold text-gray-800">
+            80C Investments (Limit: ₹1,50,000)
+          </h4>
+          <p className="text-sm text-gray-600 mt-1">Tax-saving investments under Section 80C</p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Input
             label="ELSS (Equity Linked Savings Scheme)"
             value={deductions.elss}
@@ -104,31 +108,35 @@ export function DeductionsForm() {
         </div>
         
         {/* 80C Limit Progress */}
-        <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-green-800">80C Limit Utilization</span>
-            <span className="text-sm font-medium text-green-800">
+        <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-sm font-semibold text-green-800">80C Limit Utilization</span>
+            <span className="text-sm font-semibold text-green-800">
               {eightyCLimit.used.toLocaleString()}/{eightyCLimit.limit.toLocaleString()}
             </span>
           </div>
-          <div className="w-full bg-green-200 rounded-full h-2">
+          <div className="w-full bg-green-200 rounded-full h-3 mb-3">
             <div 
-              className="bg-green-600 h-2 rounded-full transition-all duration-300"
+              className="bg-green-600 h-3 rounded-full transition-all duration-300"
               style={{ width: `${eightyCLimit.utilizationPercentage}%` }}
             ></div>
           </div>
-          <div className="text-xs text-green-700 mt-1">
+          <div className="text-sm text-green-700">
             {eightyCLimit.utilizationPercentage}% used • ₹{eightyCLimit.remaining.toLocaleString()} remaining
           </div>
         </div>
       </div>
 
       {/* 80D Health Insurance Section */}
-      <div className="space-y-4">
-        <h4 className="text-md font-semibold text-gray-800 border-b border-gray-200 pb-2">
-          80D Health Insurance
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-6">
+        <div className="border-b border-gray-200 pb-3">
+          <h4 className="text-lg font-semibold text-gray-800">
+            80D Health Insurance
+          </h4>
+          <p className="text-sm text-gray-600 mt-1">Health insurance premium deductions</p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Input
             label="Health Insurance (Self & Family)"
             value={deductions.healthInsuranceSelf}
@@ -156,11 +164,15 @@ export function DeductionsForm() {
       </div>
 
       {/* Other Deductions Section */}
-      <div className="space-y-4">
-        <h4 className="text-md font-semibold text-gray-800 border-b border-gray-200 pb-2">
-          Other Deductions & Exemptions
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-6">
+        <div className="border-b border-gray-200 pb-3">
+          <h4 className="text-lg font-semibold text-gray-800">
+            Other Deductions & Exemptions
+          </h4>
+          <p className="text-sm text-gray-600 mt-1">Additional tax-saving opportunities</p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Input
             label="HRA Exemption"
             value={deductions.hraExemption}
@@ -204,14 +216,14 @@ export function DeductionsForm() {
       </div>
 
       {/* Total Deductions Summary */}
-      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+      <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold text-green-900">Total Deductions:</span>
-          <span className="text-2xl font-bold text-green-900">
+          <span className="text-3xl font-bold text-green-900">
             {formatCurrency(totalDeductions)}
           </span>
         </div>
-        <div className="text-sm text-green-700 mt-1">
+        <div className="text-sm text-green-700 mt-2">
           Note: Most deductions are only applicable under Old Tax Regime
         </div>
       </div>
