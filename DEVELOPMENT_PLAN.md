@@ -14,7 +14,7 @@ A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New
 
 ### 1. Tax Regime Comparison Engine
 - **Old Tax Regime**: Full deductions (80C, 80D, HRA, LTA, etc.)
-- **New Tax Regime**: Limited deductions but lower tax rates (Updated FY 2025-26 slabs)
+- **New Tax Regime**: Limited deductions but lower tax rates (Updated FY 2026-27 slabs)
 - **Real-time calculation** as user inputs change
 
 ### 2. Comprehensive Income Inputs

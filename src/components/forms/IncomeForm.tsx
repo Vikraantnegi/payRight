@@ -25,7 +25,7 @@ export function IncomeForm() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Basic Salary */}
         <Input
-          label="Basic Salary *"
+          label="Basic Salary"
           type="currency"
           value={income.basicSalary || 0}
           onChange={(value) => handleInputChange('basicSalary', value)}
