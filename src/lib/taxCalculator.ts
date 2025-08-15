@@ -1,10 +1,10 @@
-import { 
-  IncomeDetails, 
-  DeductionDetails, 
-  TaxRegime, 
-  TaxCalculation, 
+import {
+  IncomeDetails,
+  DeductionDetails,
+  TaxRegime,
+  TaxCalculation,
   TaxComparison,
-  TaxSlab 
+  TaxSlab,
 } from '@/types/tax';
 
 // Tax slabs for AY 2026-27 (FY 2025-26) - Updated as per Economic Times
@@ -14,7 +14,7 @@ const OLD_REGIME_SLABS: TaxSlab[] = [
   { minIncome: 600000, maxIncome: 900000, rate: 10, description: '10%' },
   { minIncome: 900000, maxIncome: 1200000, rate: 15, description: '15%' },
   { minIncome: 1200000, maxIncome: 1500000, rate: 20, description: '20%' },
-  { minIncome: 1500000, maxIncome: Infinity, rate: 30, description: '30%' }
+  { minIncome: 1500000, maxIncome: Infinity, rate: 30, description: '30%' },
 ];
 
 // NEW TAX REGIME SLABS for FY 2025-26 (AY 2026-27) - Completely changed as per Economic Times
@@ -25,7 +25,7 @@ const NEW_REGIME_SLABS: TaxSlab[] = [
   { minIncome: 1200000, maxIncome: 1600000, rate: 15, description: '15%' },
   { minIncome: 1600000, maxIncome: 2000000, rate: 20, description: '20%' },
   { minIncome: 2000000, maxIncome: 2400000, rate: 25, description: '25%' },
-  { minIncome: 2400000, maxIncome: Infinity, rate: 30, description: '30%' }
+  { minIncome: 2400000, maxIncome: Infinity, rate: 30, description: '30%' },
 ];
 
 export const OLD_REGIME: TaxRegime = {
@@ -34,11 +34,24 @@ export const OLD_REGIME: TaxRegime = {
   taxSlabs: OLD_REGIME_SLABS,
   standardDeduction: 50000,
   allowedDeductions: [
-    'elss', 'ppf', 'epf', 'lifeInsurance', 'nps', 'homeLoanPrincipal',
-    'sukanyaSamriddhi', 'nsc', 'taxSavingFd', 'healthInsuranceSelf',
-    'healthInsuranceParents', 'preventiveHealthCheckup', 'hraExemption',
-    'lta', 'homeLoanInterest', 'donations', 'interestOnSavings'
-  ]
+    'elss',
+    'ppf',
+    'epf',
+    'lifeInsurance',
+    'nps',
+    'homeLoanPrincipal',
+    'sukanyaSamriddhi',
+    'nsc',
+    'taxSavingFd',
+    'healthInsuranceSelf',
+    'healthInsuranceParents',
+    'preventiveHealthCheckup',
+    'hraExemption',
+    'lta',
+    'homeLoanInterest',
+    'donations',
+    'interestOnSavings',
+  ],
 };
 
 export const NEW_REGIME: TaxRegime = {
@@ -46,7 +59,7 @@ export const NEW_REGIME: TaxRegime = {
   description: 'New Tax Regime with limited deductions (Updated FY 2025-26)',
   taxSlabs: NEW_REGIME_SLABS,
   standardDeduction: 75000, // Updated to ₹75,000 as per Economic Times
-  allowedDeductions: ['standardDeduction'] // Only standard deduction allowed
+  allowedDeductions: ['standardDeduction'], // Only standard deduction allowed
 };
 
 export class TaxCalculator {
@@ -71,11 +84,11 @@ export class TaxCalculator {
    * Calculate total deductions for a specific regime
    */
   static calculateTotalDeductions(
-    deductions: DeductionDetails, 
+    deductions: DeductionDetails,
     regime: TaxRegime
   ): number {
     let total = 0;
-    
+
     regime.allowedDeductions.forEach(deductionKey => {
       if (deductionKey === 'standardDeduction') {
         total += regime.standardDeduction;
@@ -93,11 +106,16 @@ export class TaxCalculator {
   /**
    * Calculate tax amount based on tax slabs
    */
-  static calculateTaxAmount(taxableIncome: number, taxSlabs: TaxSlab[]): number {
+  static calculateTaxAmount(
+    taxableIncome: number,
+    taxSlabs: TaxSlab[]
+  ): number {
     let taxAmount = 0;
     let remainingIncome = taxableIncome;
 
-    console.log(`Calculating tax for income: ₹${taxableIncome.toLocaleString('en-IN')}`);
+    console.log(
+      `Calculating tax for income: ₹${taxableIncome.toLocaleString('en-IN')}`
+    );
     console.log('Tax slabs:', taxSlabs);
 
     for (const slab of taxSlabs) {
@@ -106,15 +124,19 @@ export class TaxCalculator {
       // Calculate income in this slab
       const slabIncome = Math.min(
         remainingIncome,
-        slab.maxIncome === Infinity ? remainingIncome : slab.maxIncome - slab.minIncome
+        slab.maxIncome === Infinity
+          ? remainingIncome
+          : slab.maxIncome - slab.minIncome
       );
 
       if (slabIncome > 0) {
         const slabTax = (slabIncome * slab.rate) / 100;
         taxAmount += slabTax;
         remainingIncome -= slabIncome;
-        
-        console.log(`Slab ${slab.minIncome}-${slab.maxIncome} (${slab.rate}%): Income ₹${slabIncome.toLocaleString('en-IN')}, Tax ₹${slabTax.toLocaleString('en-IN')}`);
+
+        console.log(
+          `Slab ${slab.minIncome}-${slab.maxIncome} (${slab.rate}%): Income ₹${slabIncome.toLocaleString('en-IN')}, Tax ₹${slabTax.toLocaleString('en-IN')}`
+        );
       }
     }
 
@@ -134,8 +156,9 @@ export class TaxCalculator {
     const totalDeductions = this.calculateTotalDeductions(deductions, regime);
     const taxableIncome = Math.max(0, grossIncome - totalDeductions);
     const taxAmount = this.calculateTaxAmount(taxableIncome, regime.taxSlabs);
-    const effectiveTaxRate = grossIncome > 0 ? (taxAmount / grossIncome) * 100 : 0;
-    
+    const effectiveTaxRate =
+      grossIncome > 0 ? (taxAmount / grossIncome) * 100 : 0;
+
     const yearlyInHand = grossIncome - taxAmount;
     const monthlyInHand = yearlyInHand / 12;
 
@@ -145,9 +168,9 @@ export class TaxCalculator {
       totalDeductions,
       taxableIncome,
       taxAmount,
-      effectiveTaxRate
+      effectiveTaxRate,
     });
-    
+
     console.log(`Using tax slabs for ${regime.name} regime:`, regime.taxSlabs);
 
     return {
@@ -159,7 +182,7 @@ export class TaxCalculator {
       effectiveTaxRate: Math.round(effectiveTaxRate * 100) / 100,
       monthlyInHand: Math.round(monthlyInHand),
       yearlyInHand: Math.round(yearlyInHand),
-      standardDeduction: regime.standardDeduction
+      standardDeduction: regime.standardDeduction,
     };
   }
 
@@ -170,15 +193,30 @@ export class TaxCalculator {
     income: IncomeDetails,
     deductions: DeductionDetails
   ): TaxComparison {
-    const oldRegimeCalc = this.calculateTaxForRegime(income, deductions, OLD_REGIME);
-    const newRegimeCalc = this.calculateTaxForRegime(income, deductions, NEW_REGIME);
+    const oldRegimeCalc = this.calculateTaxForRegime(
+      income,
+      deductions,
+      OLD_REGIME
+    );
+    const newRegimeCalc = this.calculateTaxForRegime(
+      income,
+      deductions,
+      NEW_REGIME
+    );
 
-    const taxSavings = Math.abs(oldRegimeCalc.taxAmount - newRegimeCalc.taxAmount);
-    const monthlyDifference = Math.abs(oldRegimeCalc.monthlyInHand - newRegimeCalc.monthlyInHand);
-    const yearlyDifference = Math.abs(oldRegimeCalc.yearlyInHand - newRegimeCalc.yearlyInHand);
+    const taxSavings = Math.abs(
+      oldRegimeCalc.taxAmount - newRegimeCalc.taxAmount
+    );
+    const monthlyDifference = Math.abs(
+      oldRegimeCalc.monthlyInHand - newRegimeCalc.monthlyInHand
+    );
+    const yearlyDifference = Math.abs(
+      oldRegimeCalc.yearlyInHand - newRegimeCalc.yearlyInHand
+    );
 
-    const recommendedRegime = oldRegimeCalc.taxAmount <= newRegimeCalc.taxAmount ? 'old' : 'new';
-    
+    const recommendedRegime =
+      oldRegimeCalc.taxAmount <= newRegimeCalc.taxAmount ? 'old' : 'new';
+
     // Generate recommendation text
     let recommendation = '';
     if (recommendedRegime === 'old') {
@@ -194,7 +232,7 @@ export class TaxCalculator {
       recommendation,
       taxSavings,
       monthlyDifference: Math.round(monthlyDifference),
-      yearlyDifference: Math.round(yearlyDifference)
+      yearlyDifference: Math.round(yearlyDifference),
     };
   }
 
@@ -217,16 +255,22 @@ export class TaxCalculator {
     const limit = 150000;
     const used = Math.min(
       limit,
-      deductions.elss + deductions.ppf + deductions.epf + 
-      deductions.lifeInsurance + deductions.nps + deductions.homeLoanPrincipal +
-      deductions.sukanyaSamriddhi + deductions.nsc + deductions.taxSavingFd
+      deductions.elss +
+        deductions.ppf +
+        deductions.epf +
+        deductions.lifeInsurance +
+        deductions.nps +
+        deductions.homeLoanPrincipal +
+        deductions.sukanyaSamriddhi +
+        deductions.nsc +
+        deductions.taxSavingFd
     );
-    
+
     return {
       used,
       limit,
       remaining: Math.max(0, limit - used),
-      utilizationPercentage: Math.round((used / limit) * 100)
+      utilizationPercentage: Math.round((used / limit) * 100),
     };
   }
 }

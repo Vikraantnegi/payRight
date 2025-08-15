@@ -118,14 +118,17 @@ export function TaxProvider({ children }: { children: ReactNode }) {
 
   const calculateTax = () => {
     dispatch({ type: 'CALCULATE_TAX' });
-    
+
     try {
-      const comparison = TaxCalculator.compareTaxRegimes(state.income, state.deductions);
+      const comparison = TaxCalculator.compareTaxRegimes(
+        state.income,
+        state.deductions
+      );
       dispatch({ type: 'CALCULATE_TAX_SUCCESS', payload: comparison });
     } catch (error) {
-      dispatch({ 
-        type: 'CALCULATE_TAX_ERROR', 
-        payload: error instanceof Error ? error.message : 'Calculation failed' 
+      dispatch({
+        type: 'CALCULATE_TAX_ERROR',
+        payload: error instanceof Error ? error.message : 'Calculation failed',
       });
     }
   };

@@ -1,4 +1,4 @@
-# Indian Tax Calculator (payRight)
+# Pay Right
 
 A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New Tax Regime (AY 2026-27) and calculate their optimal tax strategy.
 
@@ -14,23 +14,27 @@ A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/Vikraantnegi/payRight.git
 cd payRight
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Run the development server
+
 ```bash
 npm run dev
 ```
@@ -56,15 +60,18 @@ npm run dev
 ## 🔮 Roadmap
 
 ### Milestone 1 (Current)
+
 - Basic tax calculator with regime comparison
 - Income and deduction inputs
 - Real-time calculations
 
 ### Milestone 2
+
 - Document automation (offer letters, payslips)
 - PAN integration for existing data
 
 ### Milestone 3
+
 - AI chatbot for tax queries and optimization
 
 ## 🤝 Contributing

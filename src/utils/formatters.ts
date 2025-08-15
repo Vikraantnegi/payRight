@@ -62,7 +62,11 @@ export const getRegimeBgColor = (regime: 'old' | 'new'): string => {
 /**
  * Format tax slab description
  */
-export const formatTaxSlabDescription = (slab: { minIncome: number; maxIncome: number; rate: number }): string => {
+export const formatTaxSlabDescription = (slab: {
+  minIncome: number;
+  maxIncome: number;
+  rate: number;
+}): string => {
   if (slab.maxIncome === Infinity) {
     return `Above ₹${formatLargeNumber(slab.minIncome)}`;
   }

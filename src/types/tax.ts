@@ -23,12 +23,12 @@ export interface DeductionDetails {
   sukanyaSamriddhi: number;
   nsc: number;
   taxSavingFd: number;
-  
+
   // 80D deductions
   healthInsuranceSelf: number;
   healthInsuranceParents: number;
   preventiveHealthCheckup: number;
-  
+
   // Other deductions
   hraExemption: number;
   lta: number;

@@ -46,20 +46,20 @@ export function Input({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className='block text-sm font-medium text-gray-700 mb-2'>
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className='text-red-500 ml-1'>*</span>}
       </label>
-      
-      <div className="relative group">
+
+      <div className='relative group'>
         {type === 'currency' && (
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <span className="text-gray-400 font-medium text-sm">₹</span>
+          <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
+            <span className='text-gray-400 font-medium text-sm'>₹</span>
           </div>
         )}
-        
+
         <input
-          type="text"
+          type='text'
           value={formatDisplayValue(value)}
           onChange={handleChange}
           placeholder={placeholder || `Enter ${label.toLowerCase()}`}
@@ -70,32 +70,37 @@ export function Input({
             focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
             group-hover:border-gray-300
             ${type === 'currency' ? 'pl-10' : 'pl-4'}
-            ${error 
-              ? 'border-red-200 focus:ring-red-500/20 focus:border-red-500 bg-red-50' 
-              : 'border-gray-200 bg-white hover:bg-gray-50/50'
+            ${
+              error
+                ? 'border-red-200 focus:ring-red-500/20 focus:border-red-500 bg-red-50'
+                : 'border-gray-200 bg-white hover:bg-gray-50/50'
             }
             ${disabled ? 'bg-gray-50 text-gray-500 cursor-not-allowed border-gray-200' : ''}
             leading-5
           `}
         />
-        
+
         {/* Subtle focus ring effect */}
-        <div className={`
+        <div
+          className={`
           absolute inset-0 rounded-lg transition-all duration-200 pointer-events-none
           ${error ? 'ring-2 ring-red-500/10' : 'ring-2 ring-blue-500/10'}
           opacity-0 group-focus-within:opacity-100
-        `} />
+        `}
+        />
       </div>
-      
+
       {error && (
-        <p className="text-sm text-red-600 mt-2 flex items-center space-x-2">
-          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+        <p className='text-sm text-red-600 mt-2 flex items-center space-x-2'>
+          <span className='w-1.5 h-1.5 bg-red-500 rounded-full' />
           <span>{error}</span>
         </p>
       )}
-      
+
       {helperText && !error && (
-        <p className="text-sm text-gray-500 mt-2 leading-relaxed opacity-75">{helperText}</p>
+        <p className='text-sm text-gray-500 mt-2 leading-relaxed opacity-75'>
+          {helperText}
+        </p>
       )}
     </div>
   );
