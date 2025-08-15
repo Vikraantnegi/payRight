@@ -1,7 +1,7 @@
 # Indian Tax Calculator - Development Plan
 
 ## 🎯 Application Overview
-A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New Tax Regime (AY 2025-26) and calculate their optimal tax strategy.
+A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New Tax Regime (AY 2026-27) and calculate their optimal tax strategy.
 
 ## 🏗️ Architecture & Tech Stack
 - **Frontend**: Next.js 15 with TypeScript, Tailwind CSS
@@ -14,7 +14,7 @@ A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New
 
 ### 1. Tax Regime Comparison Engine
 - **Old Tax Regime**: Full deductions (80C, 80D, HRA, LTA, etc.)
-- **New Tax Regime**: Limited deductions but lower tax rates
+- **New Tax Regime**: Limited deductions but lower tax rates (Updated FY 2025-26 slabs)
 - **Real-time calculation** as user inputs change
 
 ### 2. Comprehensive Income Inputs
@@ -96,14 +96,15 @@ A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New
 
 ### Phase 1: Foundation (Week 1)
 - [x] Project setup and dependencies
-- [ ] Basic project structure
-- [ ] Core components setup
-- [ ] Tax calculation engine foundation
+- [x] Basic project structure
+- [x] Core components setup
+- [x] Tax calculation engine foundation
+- [x] Updated tax slabs for FY 2025-26 (AY 2026-27)
 
 ### Phase 2: Core Calculator (Week 2)
-- [ ] Income input forms
-- [ ] Deduction forms
-- [ ] Tax calculation logic
+- [x] Income input forms
+- [x] Deduction forms
+- [x] Tax calculation logic
 - [ ] Basic results display
 
 ### Phase 3: UI/UX Enhancement (Week 3)
@@ -131,3 +132,15 @@ A comprehensive tax planning tool that helps Indian taxpayers compare Old vs New
 - **Pull Requests**: Code review before merging
 - **Regular Commits**: After each logical feature completion
 - **Version Tags**: For major milestones and releases
+
+## 📊 Tax Slab Updates (FY 2025-26)
+### New Tax Regime Changes
+- **Basic Exemption**: Increased from ₹3L to ₹4L
+- **New Slabs**: 0-4L (0%), 4-8L (5%), 8-12L (10%), 12-16L (15%), 16-20L (20%), 20-24L (25%), 24L+ (30%)
+- **Standard Deduction**: Increased to ₹75,000
+- **Tax Rebate**: Increased to ₹60,000 (zero tax up to ₹12L)
+
+### Old Tax Regime
+- **No Changes**: Slabs remain the same
+- **Full Deductions**: Continue to be available
+- **Standard Deduction**: ₹50,000
