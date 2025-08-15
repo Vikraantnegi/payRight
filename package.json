@@ -11,12 +11,12 @@
     "type-check": "tsc --noEmit",
     "build:analyze": "cross-env ANALYZE=true npm run build",
     "build:prod": "cross-env NODE_ENV=production npm run build",
-    "clean": "if exist .next rmdir /s /q .next && if exist out rmdir /s /q out",
-    "clean:all": "npm run clean && if exist node_modules rmdir /s /q node_modules && if exist package-lock.json del package-lock.json",
+    "clean": "rimraf .next out",
+    "clean:all": "rimraf .next out node_modules package-lock.json",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run type-check && npm run format:check",
-    "prebuild": "npm run clean",
+    "prebuild": "echo 'Build starting...'",
     "postbuild": "echo 'Build completed successfully!'"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
