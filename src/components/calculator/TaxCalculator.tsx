@@ -24,22 +24,40 @@ export function TaxCalculator() {
 
   const hasIncome = Object.values(income).some(value => value > 0);
 
+  // Scroll to top when component mounts
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Scroll to top when step changes
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+
   const handleNextStep = () => {
     if (currentStep === 'income') {
       setCurrentStep('deductions');
       setCompletedSteps(prev => new Set([...prev, 'income']));
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (currentStep === 'deductions') {
       calculateTax();
       setCurrentStep('results');
       setCompletedSteps(prev => new Set([...prev, 'deductions']));
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePreviousStep = () => {
     if (currentStep === 'deductions') {
       setCurrentStep('income');
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (currentStep === 'results') {
       setCurrentStep('deductions');
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -47,6 +65,8 @@ export function TaxCalculator() {
     resetCalculator();
     setCurrentStep('income');
     setCompletedSteps(new Set());
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const canProceedToNext = () => {
