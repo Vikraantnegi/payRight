@@ -78,8 +78,8 @@ export function TaxCalculator() {
 
   const steps = [
     { id: 'income', title: 'Income Details', description: 'Enter your annual income from all sources' },
-    { id: 'deductions', title: 'Deductions & Exemptions', description: 'Enter your tax-saving investments and exemptions' },
-    { id: 'results', title: 'Tax Calculation Results', description: 'Compare Old vs New Tax Regime' }
+    { id: 'deductions', title: 'Deductions', description: 'Enter your investments and exemptions' },
+    { id: 'results', title: 'Tax Results', description: 'Compare Old vs New Tax Regime' }
   ];
 
   return (
@@ -90,10 +90,10 @@ export function TaxCalculator() {
       
       <div className="relative max-w-6xl mx-auto px-4 py-16 space-y-16">
         {/* Header */}
-        <div className="text-center space-y-10">
+        <div className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-4">
             <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-              <CalculatorIcon className="h-8 w-8 text-white" />
+              <CalculatorIcon className="h-6 w-6 text-white" />
             </div>
             <h1 className="text-4xl font-semibold text-gray-800">
               Indian Tax Calculator

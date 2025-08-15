@@ -64,16 +64,16 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
                 <span className="font-semibold text-gray-900">{formatCurrency(oldRegime.grossIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-700 font-medium">Total Deductions:</span>
-                <span className="font-semibold text-green-600">-{formatCurrency(oldRegime.totalDeductions)}</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm text-gray-700 font-medium">Taxable Income:</span>
                 <span className="font-semibold text-gray-900">{formatCurrency(oldRegime.taxableIncome)}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm text-gray-700 font-medium">Standard Deduction:</span>
                 <span className="font-semibold text-green-600">-{formatCurrency(oldRegime.standardDeduction)}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-gray-700 font-medium">Total Deductions:</span>
+                <span className="font-semibold text-green-600">-{formatCurrency(oldRegime.totalDeductions)}</span>
               </div>
               <div className="flex justify-between items-center py-2 font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-lg">
                 <span>Final Tax:</span>
@@ -164,11 +164,14 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
               </h3>
             </div>
             <p className="text-lg text-gray-600 mb-4">
-              {recommendation}
+              {isOldRegimeBetter 
+                ? `The Old Tax Regime is better for you! You'll save ${formatCurrency(savings)} annually by choosing the Old Tax Regime. This is because your deductions (${formatCurrency(oldRegime.totalDeductions)}) provide significant tax benefits that outweigh the higher tax rates.`
+                : `The New Tax Regime is better for you! You'll save ${formatCurrency(savings)} annually by choosing the New Tax Regime. The lower tax rates provide more benefits than the deductions you could claim under the Old Tax Regime.`
+              }
             </p>
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
               <CheckCircleIcon className="h-4 w-4" />
-              <span>Recommended Choice</span>
+              <span>Choose {isOldRegimeBetter ? 'Old' : 'New'} Tax Regime</span>
             </div>
           </div>
 
