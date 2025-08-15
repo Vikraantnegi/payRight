@@ -18,7 +18,7 @@ type Step = 'income' | 'deductions' | 'results';
 
 export function TaxCalculator() {
   const { state, calculateTax, resetCalculator } = useTax();
-  const { income, comparison, isLoading, error } = state;
+  const { income, deductions, comparison, isLoading, error } = state;
   const [currentStep, setCurrentStep] = useState<Step>('income');
   const [completedSteps, setCompletedSteps] = useState<Set<Step>>(new Set());
 
@@ -71,9 +71,31 @@ export function TaxCalculator() {
 
   const canProceedToNext = () => {
     if (currentStep === 'income') {
-      return hasIncome;
+      // Check if basic salary is filled (required field)
+      return income.basicSalary > 0;
     }
-    return true;
+    if (currentStep === 'deductions') {
+      // For deductions, allow proceeding even with 0 deductions
+      // as deductions are optional for tax calculation
+      return true;
+    }
+    return false;
+  };
+
+  const getStepCompletionStatus = (step: Step) => {
+    if (step === 'income') {
+      const requiredFields = ['basicSalary'];
+      const optionalFields = ['hra', 'rsus', 'performanceBonus', 'specialAllowance', 'otherAllowances'];
+      const requiredComplete = requiredFields.every(field => income[field as keyof typeof income] > 0);
+      const optionalComplete = optionalFields.filter(field => income[field as keyof typeof income] > 0).length;
+      return requiredComplete ? (optionalComplete / optionalFields.length) * 50 + 50 : (income.basicSalary > 0 ? 25 : 0);
+    }
+    if (step === 'deductions') {
+      const totalFields = Object.keys(deductions).length;
+      const filledFields = Object.values(deductions).filter(value => value > 0).length;
+      return Math.round((filledFields / totalFields) * 100);
+    }
+    return 0;
   };
 
   const steps = [
@@ -107,47 +129,63 @@ export function TaxCalculator() {
         {/* Stepper Navigation */}
         <div className="flex justify-center px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-16">
-            {steps.map((step, index) => (
-              <div key={step.id} className="flex flex-col lg:flex-row items-center">
-                <div className="flex flex-col items-center">
-                  <div className={`
-                    w-14 h-14 rounded-full flex items-center justify-center text-base font-semibold transition-all duration-200
-                    ${currentStep === step.id 
-                      ? 'bg-blue-600 text-white shadow-lg ring-4 ring-blue-100' 
-                      : completedSteps.has(step.id as Step)
-                      ? 'bg-green-500 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-500 border-2 border-gray-200'
-                    }
-                  `}>
-                    {completedSteps.has(step.id as Step) ? (
-                      <CheckIcon className="h-7 w-7" />
-                    ) : (
-                      index + 1
-                    )}
-                  </div>
-                  <div className="mt-4 text-center max-w-40">
-                    <div className={`text-base font-semibold ${
-                      currentStep === step.id ? 'text-blue-600' : 'text-gray-700'
-                    }`}>
-                      {step.title}
+            {steps.map((step, index) => {
+              const completion = getStepCompletionStatus(step.id as Step);
+              const isActive = currentStep === step.id;
+              const isCompleted = completedSteps.has(step.id as Step);
+              
+              return (
+                <div key={step.id} className="flex flex-col lg:flex-row items-center">
+                  <div className="flex flex-col items-center">
+                    <div className="relative">
+                      <div className={`
+                        w-14 h-14 rounded-full flex items-center justify-center text-base font-semibold transition-all duration-200
+                        ${isActive 
+                          ? 'bg-blue-600 text-white shadow-lg ring-4 ring-blue-100' 
+                          : isCompleted
+                          ? 'bg-green-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-500 border-2 border-gray-200'
+                        }
+                      `}>
+                        {isCompleted ? (
+                          <CheckIcon className="h-7 w-7" />
+                        ) : (
+                          <span>{index + 1}</span>
+                        )}
+                      </div>
+                      
+                      {/* Completion indicator */}
+                      {!isCompleted && completion > 0 && (
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-xs font-bold text-blue-600">{completion}%</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="text-sm text-gray-500 mt-2 leading-relaxed">
-                      {step.description}
+                    
+                    <div className="mt-4 text-center max-w-40">
+                      <div className={`text-base font-semibold ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>
+                        {step.title}
+                      </div>
+                      <div className="text-sm text-gray-500 mt-2 leading-relaxed">
+                        {step.description}
+                      </div>
+                      {completion > 0 && !isCompleted && (
+                        <div className="mt-2 text-xs text-blue-600 font-medium">
+                          {completion}% Complete
+                        </div>
+                      )}
                     </div>
                   </div>
+                  
+                  {index < steps.length - 1 && (
+                    <>
+                      <div className="lg:hidden w-0.5 h-12 bg-gray-200 my-4" />
+                      <div className={`hidden lg:block w-20 h-0.5 mx-6 ${isCompleted ? 'bg-green-400' : 'bg-gray-200'}`} />
+                    </>
+                  )}
                 </div>
-                {index < steps.length - 1 && (
-                  <>
-                    {/* Mobile: Vertical line */}
-                    <div className="lg:hidden w-0.5 h-12 bg-gray-200 my-4" />
-                    {/* Desktop: Horizontal line */}
-                    <div className={`hidden lg:block w-20 h-0.5 mx-6 ${
-                      completedSteps.has(step.id as Step) ? 'bg-green-400' : 'bg-gray-200'
-                    }`} />
-                  </>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -157,50 +195,12 @@ export function TaxCalculator() {
           {currentStep === 'income' && (
             <div className="space-y-8">
               <IncomeForm />
-              
-              {/* Navigation */}
-              <div className="flex justify-center pt-8">
-                <button
-                  onClick={handleNextStep}
-                  disabled={!canProceedToNext()}
-                  className={`
-                    px-10 py-4 rounded-xl font-semibold text-white text-lg
-                    flex items-center space-x-3 transition-all duration-200 ease-out
-                    ${canProceedToNext()
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                      : 'bg-gray-400 cursor-not-allowed'
-                    }
-                  `}
-                >
-                  <span>Continue to Deductions</span>
-                  <ArrowRightIcon className="h-5 w-5" />
-                </button>
-              </div>
             </div>
           )}
 
           {currentStep === 'deductions' && (
             <div className="space-y-8">
               <DeductionsForm />
-              
-              {/* Navigation */}
-              <div className="flex justify-between items-center pt-8">
-                <button
-                  onClick={handlePreviousStep}
-                  className="px-8 py-4 rounded-xl font-semibold text-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center space-x-3 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
-                >
-                  <ArrowRightIcon className="h-4 w-4 rotate-180" />
-                  <span>Back to Income</span>
-                </button>
-                
-                <button
-                  onClick={handleNextStep}
-                  className="px-10 py-4 rounded-xl font-semibold text-white text-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-3 transition-all duration-200 ease-out"
-                >
-                  <CalculatorIcon className="h-5 w-5" />
-                  <span>Calculate Tax</span>
-                </button>
-              </div>
             </div>
           )}
 
@@ -210,34 +210,84 @@ export function TaxCalculator() {
             </div>
           )}
 
-          {/* Loading State */}
-          {isLoading && (
-            <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <span className="text-lg font-semibold text-blue-800">Calculating Tax...</span>
-              </div>
-              <p className="text-blue-700">
-                Please wait while we process your income and deductions
-              </p>
-            </div>
-          )}
-
-          {/* Error Display */}
-          {error && (
-            <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-8 shadow-lg">
-              <div className="flex items-center space-x-4">
-                <div className="p-3 bg-red-100 rounded-full">
-                  <InformationCircleIcon className="h-6 w-6 text-red-500" />
-                </div>
-                <div>
-                  <span className="text-red-800 font-semibold text-lg">Error: </span>
-                  <span className="text-red-700 text-lg">{error}</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Navigation Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+            {currentStep === 'income' && (
+              <button
+                onClick={handleNextStep}
+                disabled={!canProceedToNext()}
+                className={`
+                  px-8 py-4 rounded-xl font-semibold text-white transition-all duration-200 flex items-center space-x-3 shadow-lg
+                  ${canProceedToNext() 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:scale-105 transform' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }
+                `}
+              >
+                <span>Continue to Deductions</span>
+                <ArrowRightIcon className="h-5 w-5" />
+              </button>
+            )}
+            
+            {currentStep === 'deductions' && (
+              <>
+                <button
+                  onClick={handlePreviousStep}
+                  className="px-8 py-4 rounded-xl font-medium text-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center space-x-3 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
+                >
+                  <ArrowRightIcon className="h-5 w-5 rotate-180" />
+                  <span>Back to Income</span>
+                </button>
+                
+                <button
+                  onClick={handleNextStep}
+                  className="px-8 py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-200 flex items-center space-x-3 shadow-lg hover:scale-105 transform"
+                >
+                  <span>Calculate Tax</span>
+                  <ArrowRightIcon className="h-5 w-5" />
+                </button>
+              </>
+            )}
+            
+            {currentStep === 'results' && (
+              <button
+                onClick={handleReset}
+                className="px-8 py-4 rounded-xl font-medium text-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center space-x-3 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
+              >
+                <ArrowPathIcon className="h-5 w-5" />
+                <span>Calculate Again</span>
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="text-lg font-semibold text-blue-800">Calculating Tax...</span>
+            </div>
+            <p className="text-blue-700">
+              Please wait while we process your income and deductions
+            </p>
+          </div>
+        )}
+
+        {/* Error Display */}
+        {error && (
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-8 shadow-lg">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 bg-red-100 rounded-full">
+                <InformationCircleIcon className="h-6 w-6 text-red-500" />
+              </div>
+              <div>
+                <span className="text-red-800 font-semibold text-lg">Error: </span>
+                <span className="text-red-700 text-lg">{error}</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Quick Tips */}
         <Card 
