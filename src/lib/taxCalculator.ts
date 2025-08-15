@@ -97,6 +97,9 @@ export class TaxCalculator {
     let taxAmount = 0;
     let remainingIncome = taxableIncome;
 
+    console.log(`Calculating tax for income: ₹${taxableIncome.toLocaleString('en-IN')}`);
+    console.log('Tax slabs:', taxSlabs);
+
     for (const slab of taxSlabs) {
       if (remainingIncome <= 0) break;
 
@@ -107,11 +110,15 @@ export class TaxCalculator {
       );
 
       if (slabIncome > 0) {
-        taxAmount += (slabIncome * slab.rate) / 100;
+        const slabTax = (slabIncome * slab.rate) / 100;
+        taxAmount += slabTax;
         remainingIncome -= slabIncome;
+        
+        console.log(`Slab ${slab.minIncome}-${slab.maxIncome} (${slab.rate}%): Income ₹${slabIncome.toLocaleString('en-IN')}, Tax ₹${slabTax.toLocaleString('en-IN')}`);
       }
     }
 
+    console.log(`Total tax calculated: ₹${taxAmount.toLocaleString('en-IN')}`);
     return Math.round(taxAmount);
   }
 
@@ -140,6 +147,8 @@ export class TaxCalculator {
       taxAmount,
       effectiveTaxRate
     });
+    
+    console.log(`Using tax slabs for ${regime.name} regime:`, regime.taxSlabs);
 
     return {
       regime,
