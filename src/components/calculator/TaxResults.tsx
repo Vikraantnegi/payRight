@@ -11,6 +11,9 @@ import {
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon
 } from '@heroicons/react/24/outline';
+import { TaxComparisonChart } from '@/components/charts/TaxComparisonChart';
+import { TaxBreakdownChart } from '@/components/charts/TaxBreakdownChart';
+import { SavingsChart } from '@/components/charts/SavingsChart';
 
 interface TaxResultsProps {
   comparison: TaxComparison;
@@ -142,6 +145,41 @@ export function TaxResults({ comparison, onReset }: TaxResultsProps) {
             </div>
           </div>
         </Card>
+      </div>
+
+      {/* Charts Section */}
+      <div className="space-y-8">
+        <h3 className="text-2xl font-semibold text-gray-800 text-center">
+          Visual Insights & Analysis
+        </h3>
+        
+        {/* Tax Comparison Chart */}
+        <TaxComparisonChart 
+          oldRegime={oldRegime}
+          newRegime={newRegime}
+        />
+        
+        {/* Tax Breakdown Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <TaxBreakdownChart 
+            regime="old"
+            taxAmount={oldRegime.taxAmount}
+            taxableIncome={oldRegime.taxableIncome}
+            effectiveTaxRate={oldRegime.effectiveTaxRate}
+          />
+          <TaxBreakdownChart 
+            regime="new"
+            taxAmount={newRegime.taxAmount}
+            taxableIncome={newRegime.taxableIncome}
+            effectiveTaxRate={newRegime.effectiveTaxRate}
+          />
+        </div>
+        
+        {/* Savings Analysis Chart */}
+        <SavingsChart 
+          oldRegime={oldRegime}
+          newRegime={newRegime}
+        />
       </div>
 
       {/* Recommendation & Savings */}
